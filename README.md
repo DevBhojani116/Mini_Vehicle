@@ -49,7 +49,7 @@ Our future plans for this project include:
 
 We welcome contributions to this project. If you have ideas for enhancements or would like to collaborate, please open an issue or submit a pull request.
 
-## License
+<!-- ## License
 
-This project is developed by Dev Bhojani, Manas Thakur and Jayant Jha with the help of Technites' seniors and the whole team, at National Institute of Technology, Karnataka and is not currently licensed.
+This project is developed by Dev Bhojani, Manas Thakur and Jayant Jha with the help of Technites' seniors and the whole team, at National Institute of Technology, Karnataka and is not currently licensed. -->
 
