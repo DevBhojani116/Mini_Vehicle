@@ -1,4 +1,4 @@
-# RC Car Project - WiFi Control and Obstacle Detection
+# RC Car Project - WiFi Control
 
 ## Overview
 
