@@ -1,0 +1,4 @@
+Key for the connection is:
+
+Left Wheel +ve:M1 , -ve:M2
+Right Wheel +ve:M3, -ve:M4
