@@ -51,5 +51,5 @@ We welcome contributions to this project. If you have ideas for enhancements or 
 
 ## License
 
-This project is developed by Dev Bhojani, Manas Thakur and Jayant Jha at National Institute of Technology and is not currently licensed.
+This project is developed by Dev Bhojani, Manas Thakur and Jayant Jha with the help of Technites' seniors and the whole team, at National Institute of Technology, Karnataka and is not currently licensed.
 
