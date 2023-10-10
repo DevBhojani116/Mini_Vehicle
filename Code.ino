@@ -269,7 +269,7 @@ void loop() {
     stopRobot();
     
     // Rotate the servo motor to scan for an obstacle-free path
-    for (int angle = 0; angle <= 180; angle += 10) 
+    for (int angle = 0; angle <= 180; angle += 5) 
     {
       servo.write(angle);
       delay(100);
@@ -281,7 +281,7 @@ void loop() {
           leftAngleSum += angle;
           leftCount++;
         } 
-        else 
+        else if(angle>90)
         {
           rightAngleSum += angle;
           rightCount++;
@@ -295,7 +295,9 @@ void loop() {
   {
     int leftAverage = leftAngleSum / leftCount;
     int rightAverage = rightAngleSum / rightCount;
-    int averageAngle = (leftAverage + rightAverage) / 2;
+    int averageAngle = (leftAverage>rightAverage)?leftAverage:rightAverage;
+    
+    // int averageAngle = (leftAverage + rightAverage) / 2;
 
     if(averageAngle<90)
     {
@@ -305,6 +307,7 @@ void loop() {
     {
       goRight();
     }
+    
     // Now, you can use the averageAngle to determine the direction to move the rover.
     // For example, if averageAngle is less than 90, you can move left, and if it's greater than 90, move right.
   }
