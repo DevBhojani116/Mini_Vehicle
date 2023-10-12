@@ -145,20 +145,21 @@ const char* ssid = "YourSSID";
 const char* password = "YourPassword";
 
 // Motor control pins
-int motor1EnablePin = 14;  // ENA
-int motor1Input1Pin = 15;  // IN1
-int motor1Input2Pin = 13;  // IN2
+int motor1EnablePin = 14;  // ENA D5
+int motor1Input1Pin = 15;  // IN1 D8
+int motor1Input2Pin = 13;  // IN2 D7
 
-int motor2EnablePin = 12;  // ENB
-int motor2Input1Pin = 2;   // IN3
-int motor2Input2Pin = 0;   // IN4
+int motor2EnablePin = 12;  // ENB  D6
+int motor2Input1Pin = 2;   // IN3 D4
+int motor2Input2Pin = 0;   // IN4 D3
 
 // HC-SR04 Ultrasonic Sensor pins
 #define TRIGGER_PIN 16 // D0 GPIO pin for TRIGGER 
 #define ECHO_PIN 5    // D1 GPIO pin for ECHO
 //VCC to 5V
 //gnd to ground
-#define MAX_DISTANCE 200 // Maximum distance to measure
+#define MAX_DISTANCE 400 // Maximum distance to measure
+#define SOUND_VELOCITY 0.034
 
 // Servo motor control pin
 int servoPin = 4; // D2 GPIO pin for the servo
@@ -172,7 +173,11 @@ int rightAngleSum = 0;
 int leftCount = 0;
 int rightCount = 0;
 
+float duration;
+float distance;
+
 void setup() {
+  Serial.begin(115200); // Starts the serial communication
   pinMode(motor1EnablePin, OUTPUT);
   pinMode(motor1Input1Pin, OUTPUT);
   pinMode(motor1Input2Pin, OUTPUT);
@@ -180,11 +185,14 @@ void setup() {
   pinMode(motor2Input1Pin, OUTPUT);
   pinMode(motor2Input2Pin, OUTPUT);
 
+
+  pinMode(TRIGGER_PIN, OUTPUT); // Sets the trigPin as an Output
+  pinMode(ECHO_PIN, INPUT); // Sets the echoPin as an Input
   pinMode(servoPin, OUTPUT); // Initialize the servo pin
   
   servo.attach(servoPin); // Attach the servo to the pin
 
-  Serial.begin(115200);
+  // Serial.begin(115200);
 
   // Connecting to Wi-Fi
   WiFi.mode(WIFI_AP);
@@ -260,8 +268,30 @@ void loop() {
   if (command == "R") goRight();
   else if (command == "S") stopRobot();
 
+  // Clears the trigPin
+  digitalWrite(TRIGGER_PIN, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(TRIGGER_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIGGER_PIN, LOW);
+  
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(ECHO_PIN, HIGH);
+  
+  // Calculate the distance
+  distance = duration * SOUND_VELOCITY/2;
+  
+  
+  // Prints the distance on the Serial Monitor
+  Serial.print("Distance (cm): ");
+  Serial.println(distance);
   // Measure distance using the HC-SR04 sensor
-  unsigned int distance = sonar.ping_cm();
+  // unsigned int distance = sonar.ping_cm();
+  // Serial.println("distance is: " + distance + "");
+
+  while(distance>100)
+    goAhead();
 
   // Make navigation decisions based on the detected distance
   if (distance > 0 && distance <= 100) {
@@ -274,6 +304,7 @@ void loop() {
       servo.write(angle);
       delay(100);
       distance = sonar.ping_cm();
+      // Serial.println("distance is: " + distance);
       if (distance > 100) 
       {
         if (angle < 90) 
